@@ -85,5 +85,32 @@
 			blank_time = #{blankTime}
 		WHERE student_attendance_id = #{studentAttendanceId}
 	</update>
+	<select id="notEnterCount" resultType="int">
+	SELECT
+		COUNT(*)
+	FROM
+		t_student_attendance
+	WHERE
+	    <!-- API設計書 LMSユーザーID -->
+		lms_user_id = #{lmsUserId}
+		
+		<!-- API設計書 削除フラグ -->
+		AND delete_flg = #{deleteFlg}
+		
+		<!-- API設計書No.3 過去の日付判定 -->
+		AND CAST(training_date AS DATE) &lt; CAST(#{trainingDate} AS DATE)
+		
+		<!-- API設計書No.4 欠席ステータス除外のため、単純比較で実装 -->
+		AND status != 1
+		
+		<!-- API設計書No.5 出勤時間または退勤時間が未入力（空文字、またはNULL）のレコードを抽出 -->
+		AND (
+			training_start_time = ''
+			OR training_end_time = ''
+			OR training_start_time IS NULL
+			OR training_end_time IS NULL
+		)
+</select>
 
-</mapper>
+	
+  </mapper>
