@@ -335,7 +335,7 @@ public class StudentAttendanceService {
 	}
 	/**
 	 * Task.25 過去日の未入力チェック
-	 * 今日より前の過去日に、未入力の勤怠があるかどうかを判定する。
+	 * 今日より前に、未入力の勤怠があるかどうかを判定する。
 	 *
 	 * @return 未入力日が0より大きい場合 true、そうでない場合は false
 	 * @throws ParseException
@@ -345,13 +345,13 @@ public class StudentAttendanceService {
 		Date today = dateUtil.parse(dateUtil.toString(new Date()));
 
 		// 2. tStudentAttendanceMapper.notEnterCount を呼び出し、未入力件数を取得する
-		int count = tStudentAttendanceMapper.notEnterCount(
+		int missingAttendanceCount = tStudentAttendanceMapper.notEnterCount(
 				loginUserDto.getLmsUserId(),
 				Constants.DB_FLG_FALSE,
 				today);
 
 		// 3. 件数が 0 より大きければ true、そうでなければ false を戻す
-		return count > 0;
+		return missingAttendanceCount > 0;
 	}
 
 }
