@@ -1,6 +1,7 @@
 package jp.co.sss.lms.service;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -341,17 +342,21 @@ public class StudentAttendanceService {
 	 * @throws ParseException
 	 */
 	public Boolean notEnterCheck() throws ParseException {
-		// 1. 今日の日付を取得する
-		Date today = dateUtil.parse(dateUtil.toString(new Date()));
+	    // a. SimpleDateFormatクラスでフォーマットパターンを設定する
+	    SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+	    
+	    // b. 現在日付を取得し、フォーマットを適用する
+	    String todayStr = sdf.format(new Date());
+	    Date today = sdf.parse(todayStr); // ※Mapper側がDate型を求める場合
 
-		// 2. tStudentAttendanceMapper.notEnterCount を呼び出し、未入力件数を取得する
-		int missingAttendanceCount = tStudentAttendanceMapper.notEnterCount(
-				loginUserDto.getLmsUserId(),
-				Constants.DB_FLG_FALSE,
-				today);
+	    // 2. tStudentAttendanceMapper.notEnterCount を呼び出し、未入力件数を取得する
+	    int missingAttendanceCount = tStudentAttendanceMapper.notEnterCount(
+	            loginUserDto.getLmsUserId(),
+	            Constants.DB_FLG_FALSE,
+	            today);
 
-		// 3. 件数が 0 より大きければ true、そうでなければ false を戻す
-		return missingAttendanceCount > 0;
+	    // 3. 件数が 0 より大きければ true、そうでなければ false を戻す
+	    return missingAttendanceCount > 0;
 	}
 
 }
