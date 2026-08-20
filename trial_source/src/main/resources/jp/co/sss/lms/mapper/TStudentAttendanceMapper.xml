@@ -91,16 +91,16 @@
 	FROM
 		t_student_attendance
 	WHERE
-	    <!-- API設計書 LMSユーザーID -->
+	    <!-- API設計書No.1  LMSユーザーIDチェック -->
 		lms_user_id = #{lmsUserId}
 		
-		<!-- API設計書 削除フラグ -->
+		<!-- API設計書No.2  削除フラグチェック-->
 		AND delete_flg = #{deleteFlg}
 		
 		<!-- API設計書No.3 過去の日付判定 -->
 		AND CAST(training_date AS DATE) &lt; CAST(#{trainingDate} AS DATE)
 		
-		<!-- API設計書No.4 欠席ステータス除外のため、単純比較で実装 -->
+		<!-- API設計書No.4 勤怠状態が欠席でないかを判定 -->
 		AND status != 1
 		
 		<!-- API設計書No.5 出勤時間または退勤時間が未入力（空文字、またはNULL）のレコードを抽出 -->
