@@ -29,13 +29,13 @@ public class AttendanceController {
 	private StudentAttendanceService studentAttendanceService;
 	@Autowired
 	private LoginUserDto loginUserDto;
-	
+
 	/**
 	 * 勤怠管理画面 初期表示
-	 *
-	 * @param lmsUserId
-	 * @param courseId
-	 * @param model
+	 * @author 堀部和-Task.25
+	 * @param lmsUserId(LMSユーザーID）
+	 * @param courseId（コースID）
+	 * @param model モデル
 	 * @return 勤怠管理画面
 	 * @throws ParseException
 	 */
@@ -137,10 +137,9 @@ public class AttendanceController {
 	@RequestMapping(path = "/update", params = "complete", method = RequestMethod.POST)
 	public String complete(AttendanceForm attendanceForm, Model model, BindingResult result)
 			throws ParseException {
-		
+
 		// 更新処理の前に呼び出す
 		studentAttendanceService.formatConversion(attendanceForm);
-		
 
 		// 更新
 		String message = studentAttendanceService.update(attendanceForm);
